@@ -26,6 +26,10 @@ import DashboardSidebar from "./dashboard-sidebar"
 import AdminMemberCRUD from "./admin-member-crud"
 import AdminDocumentationCRUD from "./admin-documentation-crud"
 import AdminAttendanceManagement from "./admin-attendance-management"
+import AdminAchievementManagement from "./admin-achievement-management"
+import AdminMemberCRUD from "./admin-member-crud"
+import AdminDocumentationCRUD from "./admin-documentation-crud"
+import AdminAttendanceManagement from "./admin-attendance-management"
 
 interface RobotikAdminDashboardProps {
   onLogout: () => void
@@ -210,6 +214,14 @@ export default function RobotikAdminDashboard({ onLogout }: RobotikAdminDashboar
     switch (activeTab) {
       case "dashboard":
         return renderDashboard()
+      case "members":
+        return <AdminMemberCRUD ekskulType="robotik" />
+      case "documentation":
+        return <AdminDocumentationCRUD ekskulType="robotik" />
+      case "attendance":
+        return <AdminAttendanceManagement />
+      case "achievements":
+        return <AdminAchievementManagement />
       case "members":
         return <AdminMemberCRUD ekskulType="robotik" />
       case "documentation":

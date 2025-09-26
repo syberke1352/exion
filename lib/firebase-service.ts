@@ -5,6 +5,7 @@ import {
   updateDoc,
   deleteDoc,
   getDocs,
+  getDoc,
   query,
   where,
   orderBy,
@@ -13,10 +14,39 @@ import {
 import { db } from "./firebase"
 import type { Member, Documentation, Achievement, Attendance, Schedule } from "@/types"
 
+// Helper function to convert Firestore data
+const convertFirestoreData = (data: any) => {
+  const converted = { ...data }
+  
+  // Convert Firestore Timestamps to Date objects
+  if (data.date && typeof data.date.toDate === 'function') {
+    converted.date = data.date.toDate()
+  } else if (data.date && typeof data.date === 'string') {
+    converted.date = new Date(data.date)
+  }
+  
+  if (data.joinDate && typeof data.joinDate.toDate === 'function') {
+    converted.joinDate = data.joinDate.toDate()
+  } else if (data.joinDate && typeof data.joinDate === 'string') {
+    converted.joinDate = new Date(data.joinDate)
+  }
+  
+  if (data.createdAt && typeof data.createdAt.toDate === 'function') {
+    converted.createdAt = data.createdAt.toDate()
+  }
+  
+  if (data.updatedAt && typeof data.updatedAt.toDate === 'function') {
+    converted.updatedAt = data.updatedAt.toDate()
+  }
+  
+  return converted
+}
+
 // Members
 export const addMember = async (member: Omit<Member, "id" | "createdAt" | "updatedAt">) => {
   const docRef = await addDoc(collection(db, "members"), {
     ...member,
+    joinDate: member.joinDate instanceof Date ? Timestamp.fromDate(member.joinDate) : Timestamp.fromDate(new Date(member.joinDate)),
     createdAt: Timestamp.now(),
     updatedAt: Timestamp.now(),
   })
@@ -43,13 +73,17 @@ export const getMembers = async (ekskulType?: string) => {
   }
 
   const snapshot = await getDocs(q)
-  return snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }) as Member)
+  return snapshot.docs.map((doc) => ({ 
+    id: doc.id, 
+    ...convertFirestoreData(doc.data()) 
+  }) as Member)
 }
 
 // Documentation
 export const addDocumentation = async (doc: Omit<Documentation, "id" | "createdAt" | "updatedAt">) => {
   const docRef = await addDoc(collection(db, "documentation"), {
     ...doc,
+    date: doc.date instanceof Date ? Timestamp.fromDate(doc.date) : Timestamp.fromDate(new Date(doc.date)),
     createdAt: Timestamp.now(),
     updatedAt: Timestamp.now(),
   })
@@ -76,12 +110,16 @@ export const getDocumentation = async (ekskulType?: string) => {
   }
 
   const snapshot = await getDocs(q)
-  return snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }) as Documentation)
+  return snapshot.docs.map((doc) => ({ 
+    id: doc.id, 
+    ...convertFirestoreData(doc.data()) 
+  }) as Documentation)
 }
 
 export const addAchievement = async (achievement: Omit<Achievement, "id" | "createdAt" | "updatedAt">) => {
   const docRef = await addDoc(collection(db, "achievements"), {
     ...achievement,
+    date: achievement.date instanceof Date ? Timestamp.fromDate(achievement.date) : Timestamp.fromDate(new Date(achievement.date)),
     createdAt: Timestamp.now(),
     updatedAt: Timestamp.now(),
   })
@@ -108,7 +146,10 @@ export const getAchievements = async (ekskulType?: string) => {
   }
 
   const snapshot = await getDocs(q)
-  return snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }) as Achievement)
+  return snapshot.docs.map((doc) => ({ 
+    id: doc.id, 
+    ...convertFirestoreData(doc.data()) 
+  }) as Achievement)
 }
 
 export const addAttendance = async (attendance: Omit<Attendance, "id" | "createdAt">) => {
@@ -143,12 +184,16 @@ export const getAttendance = async (ekskulType?: string, memberId?: string) => {
   }
 
   const snapshot = await getDocs(q)
-  return snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }) as Attendance)
+  return snapshot.docs.map((doc) => ({ 
+    id: doc.id, 
+    ...convertFirestoreData(doc.data()) 
+  }) as Attendance)
 }
 
 export const addSchedule = async (schedule: Omit<Schedule, "id" | "createdAt" | "updatedAt">) => {
   const docRef = await addDoc(collection(db, "schedules"), {
     ...schedule,
+    date: schedule.date instanceof Date ? Timestamp.fromDate(schedule.date) : Timestamp.fromDate(new Date(schedule.date)),
     createdAt: Timestamp.now(),
     updatedAt: Timestamp.now(),
   })
@@ -175,16 +220,20 @@ export const getSchedules = async (ekskulType?: string) => {
   }
 
   const snapshot = await getDocs(q)
-  return snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }) as Schedule)
+  return snapshot.docs.map((doc) => ({ 
+    id: doc.id, 
+    ...convertFirestoreData(doc.data()) 
+  }) as Schedule)
 }
 
 export const getMemberById = async (id: string): Promise<Member | null> => {
   try {
-    const docRef = doc(db, "members", id)
-    const docSnap = await getDocs(query(collection(db, "members"), where("__name__", "==", id)))
-    if (!docSnap.empty) {
-      const memberDoc = docSnap.docs[0]
-      return { id: memberDoc.id, ...memberDoc.data() } as Member
+    const docSnap = await getDoc(doc(db, "members", id))
+    if (docSnap.exists()) {
+      return { 
+        id: docSnap.id, 
+        ...convertFirestoreData(docSnap.data()) 
+      } as Member
     }
     return null
   } catch (error) {
@@ -206,7 +255,10 @@ export const getActiveMembers = async (ekskulType?: string) => {
   }
 
   const snapshot = await getDocs(q)
-  return snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }) as Member)
+  return snapshot.docs.map((doc) => ({ 
+    id: doc.id, 
+    ...convertFirestoreData(doc.data()) 
+  }) as Member)
 }
 
 export const getRecentDocumentation = async (ekskulType?: string, limit = 10) => {
@@ -217,6 +269,9 @@ export const getRecentDocumentation = async (ekskulType?: string, limit = 10) =>
   }
 
   const snapshot = await getDocs(q)
-  const docs = snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }) as Documentation)
+  const docs = snapshot.docs.map((doc) => ({ 
+    id: doc.id, 
+    ...convertFirestoreData(doc.data()) 
+  }) as Documentation)
   return docs.slice(0, limit)
 }

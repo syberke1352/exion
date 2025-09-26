@@ -20,7 +20,6 @@ interface DashboardSidebarProps {
   onLogout: () => void
   isOpen: boolean
   onClose: () => void
-  variant?: "default" | "robotik" | "silat" | "futsal" | "band"
   variant?: "default" | "robotik" | "silat" | "futsal" | "band" | "hadroh" | "qori"
 }
 

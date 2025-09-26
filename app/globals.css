@@ -1,24 +1,24 @@
 @import "tailwindcss";
 @import "tw-animate-css";
 
-/* Updated to SMK Tibazma white and blue theme */
+/* Enhanced SMK TI BAZMA theme with better visual hierarchy */
 :root {
-  /* Improved white and blue theme with better contrast */
+  /* Professional white and blue theme with excellent contrast */
   --background: #ffffff;
   --foreground: #1a1a1a;
   --card: #ffffff;
   --card-foreground: #1a1a1a;
   --popover: #ffffff;
   --popover-foreground: #1a1a1a;
-  /* Strong blue primary for better visibility */
+  /* Enhanced blue primary with better accessibility */
   --primary: #2563eb;
   --primary-foreground: #ffffff;
-  /* Light gray secondary with better contrast */
+  /* Refined secondary colors */
   --secondary: #f1f5f9;
   --secondary-foreground: #334155;
   --muted: #f8fafc;
   --muted-foreground: #64748b;
-  /* Distinct accent color */
+  /* Vibrant accent colors */
   --accent: #3b82f6;
   --accent-foreground: #ffffff;
   --destructive: #dc2626;
@@ -26,6 +26,10 @@
   --border: #e2e8f0;
   --input: #ffffff;
   --ring: #2563eb;
+  --success: #059669;
+  --success-foreground: #ffffff;
+  --warning: #d97706;
+  --warning-foreground: #ffffff;
   --chart-1: #2563eb;
   --chart-2: #3b82f6;
   --chart-3: #dc2626;
@@ -41,13 +45,17 @@
   --sidebar-border: #cbd5e1;
   --sidebar-ring: #2563eb;
 
-  /* Distinct activity colors */
+  /* Enhanced ekstrakurikuler brand colors */
   --robotics-color: #f59e0b;
   --silat-color: #dc2626;
   --futsal-color: #059669;
   --music-color: #7c3aed;
   --hadroh-color: #10b981;
   --qori-color: #6366f1;
+  
+  /* Animation variables */
+  --animation-duration: 0.3s;
+  --animation-timing: cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 @theme inline {
@@ -209,21 +217,61 @@
 
   .admin-card {
     background: hsl(var(--card));
-    border: 1px solid #e2e8f0;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
-    transition: all 0.3s ease;
+    border: 1px solid hsl(var(--border));
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08), 0 1px 2px rgba(0, 0, 0, 0.06);
+    transition: all var(--animation-duration) var(--animation-timing);
+    border-radius: calc(var(--radius) + 2px);
   }
   .admin-card:hover {
-    box-shadow: 0 8px 25px rgba(37, 99, 235, 0.1);
-    transform: translateY(-2px);
+    box-shadow: 0 10px 30px rgba(37, 99, 235, 0.12), 0 4px 6px rgba(0, 0, 0, 0.05);
+    transform: translateY(-3px);
+    border-color: hsl(var(--primary) / 0.3);
   }
 
+  /* Enhanced form styling */
+  .form-card {
+    background: hsl(var(--card));
+    border: 1px solid hsl(var(--border));
+    border-radius: calc(var(--radius) + 4px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  }
+  
+  /* Better button hover effects */
+  .btn-primary {
+    background: hsl(var(--primary));
+    color: hsl(var(--primary-foreground));
+    transition: all var(--animation-duration) var(--animation-timing);
+  }
+  .btn-primary:hover {
+    background: hsl(var(--primary) / 0.9);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px hsl(var(--primary) / 0.3);
+  }
+  
+  /* Enhanced status indicators */
   .status-active {
-    background: #dcfce7;
-    color: #166534;
+    background: hsl(var(--success) / 0.1);
+    color: hsl(var(--success));
+    border: 1px solid hsl(var(--success) / 0.2);
   }
   .status-inactive {
-    background: #fee2e2;
-    color: #991b1b;
+    background: hsl(var(--destructive) / 0.1);
+    color: hsl(var(--destructive));
+    border: 1px solid hsl(var(--destructive) / 0.2);
+  }
+  
+  /* Loading states */
+  .loading-shimmer {
+    background: linear-gradient(90deg, 
+      hsl(var(--muted)) 0%, 
+      hsl(var(--muted) / 0.8) 50%, 
+      hsl(var(--muted)) 100%);
+    background-size: 200% 100%;
+    animation: shimmer 1.5s infinite;
+  }
+  
+  @keyframes shimmer {
+    0% { background-position: -200% 0; }
+    100% { background-position: 200% 0; }
   }
 }

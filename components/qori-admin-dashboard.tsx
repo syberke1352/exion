@@ -157,9 +157,11 @@ export default function QoriAdminDashboard({ onLogout }: QoriAdminDashboardProps
       case "dashboard":
         return renderDashboard()
       case "members":
-        return <AdminMemberCRUD ekskulType="hadroh" />
+        return <AdminMemberCRUD ekskulType="qori" />
       case "documentation":
-        return <AdminDocumentationCRUD ekskulType="hadroh" />
+        return <AdminDocumentationCRUD ekskulType="qori" />
+      case "attendance":
+        return <AdminAttendanceManagement />
       case "achievements":
         return <AdminAchievementManagement />
       default:

@@ -37,6 +37,7 @@ export default function AdminDocumentationCRUD({ ekskulType }: AdminDocumentatio
     category: "training" as "training" | "competition" | "event" | "workshop",
   })
   const [uploadResults, setUploadResults] = useState<any[]>([])
+  const [error, setError] = useState("")
 
   // Determine which ekskul type to filter by
   const getFilterEkskulType = (): EkskulType | undefined => {
@@ -68,25 +69,25 @@ export default function AdminDocumentationCRUD({ ekskulType }: AdminDocumentatio
       const docData = {
         ...formData,
         ekskulType: getFilterEkskulType() || "robotik",
-        date: new Date(formData.date),
-        photoUrls: uploadResults.map((result) => result.secureUrl || result.url),
-        image: uploadResults[0]?.secureUrl || uploadResults[0]?.url || "",
+        date: formData.date ? new Date(formData.date) : new Date(),
+        photoUrls: uploadResults.map((result) => result.secure_url || result.url || ""),
+        image: uploadResults[0]?.secure_url || uploadResults[0]?.url || "",
         createdBy: user.id,
       }
 
       if (editingDoc) {
         await documentationOperations.update(editingDoc.id, docData)
-        alert("Dokumentasi berhasil diperbarui!")
+        console.log("Dokumentasi berhasil diperbarui!")
       } else {
         await documentationOperations.create(docData)
-        alert("Dokumentasi baru berhasil ditambahkan!")
+        console.log("Dokumentasi baru berhasil ditambahkan!")
       }
 
       setIsDialogOpen(false)
       resetForm()
     } catch (error) {
       console.error("Error saving documentation:", error)
-      alert("Gagal menyimpan dokumentasi. Silakan coba lagi.")
+      setError("Gagal menyimpan dokumentasi. Silakan coba lagi.")
     } finally {
       setLoading(false)
     }
@@ -230,13 +231,34 @@ export default function AdminDocumentationCRUD({ ekskulType }: AdminDocumentatio
               <div>
                 <Label>Foto Kegiatan</Label>
                 <CloudinaryUpload
-                  onUploadComplete={(results) => setUploadResults(results)}
+                  onUploadComplete={(results) => {
+                    console.log("Upload results:", results)
+                    setUploadResults(results)
+                  }}
+                  onUploadError={(error) => {
+                    console.error("Upload error:", error)
+                    setError(error)
+                  }}
                   folder="ekskul/documentation"
                   multiple={true}
                   maxFiles={10}
                   accept="image/*"
-                  tags={[getFilterEkskulType() || "general", "documentation"]}
                 />
+                {uploadResults.length > 0 && (
+                  <div className="mt-2 grid grid-cols-3 gap-2">
+                    {uploadResults.map((result, index) => (
+                      <img
+                        key={index}
+                        src={result.secure_url || result.url}
+                        alt={`Preview ${index + 1}`}
+                        className="w-full h-20 object-cover rounded border"
+                      />
+                    ))}
+                  </div>
+                )}
+                {error && (
+                  <p className="text-sm text-red-500 mt-1">{error}</p>
+                )}
               </div>
 
               <Button type="submit" className="w-full" disabled={loading}>

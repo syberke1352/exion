@@ -75,24 +75,23 @@ export default function AdminMemberCRUD({ ekskulType }: AdminMemberCRUDProps) {
       const memberData = {
         ...formData,
         ekskulType: getFilterEkskulType() || "robotik",
-        joinDate: new Date(formData.joinDate),
-        photoUrl: uploadResults[0]?.secureUrl || uploadResults[0]?.url || "",
+        joinDate: formData.joinDate ? new Date(formData.joinDate) : new Date(),
+        photoUrl: uploadResults[0]?.secure_url || uploadResults[0]?.url || "",
         createdBy: user.id,
       }
 
       if (editingMember) {
         await memberOperations.update(editingMember.id, memberData)
-        alert("Data anggota berhasil diperbarui!")
+        console.log("Data anggota berhasil diperbarui!")
       } else {
         await memberOperations.create(memberData)
-        alert("Anggota baru berhasil ditambahkan!")
+        console.log("Anggota baru berhasil ditambahkan!")
       }
 
       setIsDialogOpen(false)
       resetForm()
     } catch (error) {
       console.error("Error saving member:", error)
-      alert("Gagal menyimpan data anggota. Silakan coba lagi.")
     } finally {
       setLoading(false)
     }
@@ -266,12 +265,24 @@ export default function AdminMemberCRUD({ ekskulType }: AdminMemberCRUDProps) {
               <div>
                 <Label>Foto Profil</Label>
                 <CloudinaryUpload
-                  onUploadComplete={(results) => setUploadResults(results)}
+                  onUploadComplete={(results) => {
+                    console.log("Member photo upload results:", results)
+                    setUploadResults(results)
+                  }}
+                  onUploadError={(error) => console.error("Member photo upload error:", error)}
                   folder="ekskul/members"
                   multiple={false}
                   accept="image/*"
-                  tags={[getFilterEkskulType() || "general", "member"]}
                 />
+                {uploadResults[0] && (
+                  <div className="mt-2">
+                    <img
+                      src={uploadResults[0].secure_url || uploadResults[0].url}
+                      alt="Preview"
+                      className="w-20 h-20 object-cover rounded-full border"
+                    />
+                  </div>
+                )}
               </div>
 
               <Button type="submit" className="w-full" disabled={loading}>

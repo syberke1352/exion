@@ -11,6 +11,10 @@ import type { Member, Documentation, Achievement } from "@/types"
 import LoadingSpinner from "./loading-spinner"
 import DashboardCard from "./dashboard-card"
 import DashboardSidebar from "./dashboard-sidebar"
+import AdminMemberCRUD from "./admin-member-crud"
+import AdminDocumentationCRUD from "./admin-documentation-crud"
+import AdminAttendanceManagement from "./admin-attendance-management"
+import AdminAchievementManagement from "./admin-achievement-management"
 
 interface SilatAdminDashboardProps {
   onLogout: () => void
@@ -191,6 +195,14 @@ export default function SilatAdminDashboard({ onLogout }: SilatAdminDashboardPro
     switch (activeTab) {
       case "dashboard":
         return renderDashboard()
+      case "members":
+        return <AdminMemberCRUD ekskulType="silat" />
+      case "documentation":
+        return <AdminDocumentationCRUD ekskulType="silat" />
+      case "attendance":
+        return <AdminAttendanceManagement />
+      case "achievements":
+        return <AdminAchievementManagement />
       default:
         return renderDashboard()
     }

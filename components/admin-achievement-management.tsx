@@ -69,7 +69,7 @@ export default function AdminAchievementManagement() {
       const achievementData: Omit<Achievement, "id" | "createdAt" | "updatedAt"> = {
         title: newAchievement.title,
         description: newAchievement.description,
-        date: new Date(newAchievement.date), // ✅ konversi string -> Date
+        date: newAchievement.date ? new Date(newAchievement.date) : new Date(),
         level: newAchievement.level,
         position: newAchievement.position,
         participants: newAchievement.participants,
@@ -80,10 +80,10 @@ export default function AdminAchievementManagement() {
 
       if (editingAchievement) {
         await updateAchievement(editingAchievement.id, achievementData)
-        alert("Prestasi berhasil diperbarui!")
+        console.log("Prestasi berhasil diperbarui!")
       } else {
         await addAchievement(achievementData)
-        alert("Prestasi baru berhasil ditambahkan!")
+        console.log("Prestasi baru berhasil ditambahkan!")
       }
 
       const updatedAchievements = await getAchievements(ekskulType || undefined)
@@ -92,7 +92,6 @@ export default function AdminAchievementManagement() {
       resetForm()
     } catch (error) {
       console.error("Error saving achievement:", error)
-      alert("Gagal menyimpan prestasi. Silakan coba lagi.")
     } finally {
       setLoading(false)
     }
@@ -334,10 +333,14 @@ export default function AdminAchievementManagement() {
                 <Label htmlFor="achievementPhoto">Upload Foto Prestasi</Label>
                 <CloudinaryUpload
                   onUploadComplete={(results) => {
+                    console.log("Achievement photo upload results:", results)
                     setUploadResults(results)
                     if (results[0]?.secure_url) {
                       setAchievementPhotoPreview(results[0].secure_url)
                     }
+                  }}
+                  onUploadError={(error) => {
+                    console.error("Achievement photo upload error:", error)
                   }}
                   multiple={false}
                   accept="image/*"

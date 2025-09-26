@@ -155,8 +155,19 @@ export default function AdminDashboard({ onLogout }: AdminDashboardProps) {
     try {
       let imageUrl = ""
       if (docPhoto) {
-        const result = await uploadImage(docPhoto)   // ✅ pakai uploadImage
-        imageUrl = result.secure_url
+        const formData = new FormData()
+        formData.append("file", docPhoto)
+        formData.append("folder", "ekskul/documentation")
+        
+        const response = await fetch("/api/cloudinary/upload", {
+          method: "POST",
+          body: formData,
+        })
+        
+        if (response.ok) {
+          const result = await response.json()
+          imageUrl = result.secure_url
+        }
       }
 
       const ekskulType = getCurrentEkskulType()
@@ -170,7 +181,7 @@ export default function AdminDashboard({ onLogout }: AdminDashboardProps) {
         photoUrls: imageUrl ? [imageUrl] : [],
         ekskulType: ekskulType || "robotik",
         createdBy: user.id,
-        date: new Date(newDoc.date),   // ✅ fix: convert ke Date
+        date: newDoc.date ? new Date(newDoc.date) : new Date(),
       }
 
       await addDocumentation(docData)
@@ -196,8 +207,19 @@ export default function AdminDashboard({ onLogout }: AdminDashboardProps) {
     try {
       let photoUrl = ""
       if (memberPhoto) {
-        const result = await uploadImage(memberPhoto)   // ✅ pakai uploadImage
-        photoUrl = result.secure_url
+        const formData = new FormData()
+        formData.append("file", memberPhoto)
+        formData.append("folder", "ekskul/members")
+        
+        const response = await fetch("/api/cloudinary/upload", {
+          method: "POST",
+          body: formData,
+        })
+        
+        if (response.ok) {
+          const result = await response.json()
+          photoUrl = result.secure_url
+        }
       }
 
       const ekskulType = getCurrentEkskulType()
@@ -210,7 +232,7 @@ export default function AdminDashboard({ onLogout }: AdminDashboardProps) {
         photoUrl,
         ekskulType: ekskulType || "robotik",
         status: "active" as const,
-        joinDate: new Date(newMember.joinDate),   // ✅ convert ke Date
+        joinDate: newMember.joinDate ? new Date(newMember.joinDate) : new Date(),
         studentId: `STD${Date.now()}`,
       }
 

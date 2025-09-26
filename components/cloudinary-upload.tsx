@@ -9,7 +9,7 @@ import { Upload, X, CircleCheck as CheckCircle, CircleAlert as AlertCircle, File
 import { uploadImage, type UploadProgress } from "@/lib/cloudinary-upload";
 
 interface CloudinaryUploadProps {
-  onUploadComplete: (results: { secure_url: string }[]) => void;
+  onUploadComplete: (results: { secure_url: string; url?: string }[]) => void;
   onUploadError?: (error: string) => void;
   multiple?: boolean;
   maxFiles?: number;
@@ -78,7 +78,7 @@ const CloudinaryUpload = ({
     setUploadProgress({});
 
     try {
-      const results: { secure_url: string }[] = [];
+      const results: { secure_url: string; url?: string }[] = [];
 
       for (let i = 0; i < files.length; i++) {
         const formData = new FormData();
@@ -91,11 +91,15 @@ const CloudinaryUpload = ({
         });
         
         if (!response.ok) {
-          throw new Error("Upload failed");
+          const errorData = await response.json();
+          throw new Error(errorData.error || "Upload failed");
         }
         
         const result = await response.json();
-        results.push({ secure_url: result.secure_url });
+        results.push({ 
+          secure_url: result.secure_url,
+          url: result.url || result.secure_url 
+        });
         
         // Update progress
         setUploadProgress((prev) => ({
@@ -121,6 +125,7 @@ const CloudinaryUpload = ({
       const errorMessage = err instanceof Error ? err.message : "Upload failed";
       setError(errorMessage);
       onUploadError?.(errorMessage);
+      console.error("Upload error:", err);
     } finally {
       setUploading(false);
     }
