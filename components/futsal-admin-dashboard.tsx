@@ -1,19 +1,7 @@
 "use client"
 
 import { useState, useEffect } from "react"
-import {
-  LayoutDashboard,
-  FileText,
-  Users,
-  Settings,
-  Trophy,
-  BarChart3,
-  Target,
-  Timer,
-  MapPin,
-  Calendar,
-  Menu,
-} from "lucide-react"
+import { LayoutDashboard, FileText, Users, Settings, Trophy, ChartBar as BarChart3, Target, Timer, MapPin, Calendar, Menu } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
@@ -287,14 +275,6 @@ export default function FutsalAdminDashboard({ onLogout }: FutsalAdminDashboardP
     switch (activeTab) {
       case "dashboard":
         return renderDashboard()
-      case "members":
-        return <AdminMemberCRUD ekskulType="futsal" />
-      case "documentation":
-        return <AdminDocumentationCRUD ekskulType="futsal" />
-      case "attendance":
-        return <AdminAttendanceManagement />
-      case "achievements":
-        return <AdminAchievementManagement />
       default:
         return renderDashboard()
     }
