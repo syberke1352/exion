@@ -52,6 +52,7 @@ export default function AdminDashboard({ onLogout }: AdminDashboardProps) {
     phone: "",
     email: "",
     joinDate: "",
+    role: "Anggota",
   })
   const [memberPhoto, setMemberPhoto] = useState<File | null>(null)
   const [memberPhotoPreview, setMemberPhotoPreview] = useState<string>("")
@@ -234,6 +235,7 @@ export default function AdminDashboard({ onLogout }: AdminDashboardProps) {
         status: "active" as const,
         joinDate: newMember.joinDate ? new Date(newMember.joinDate) : new Date(),
         studentId: `STD${Date.now()}`,
+        role: newMember.role,
       }
 
       await addMember(memberData)
@@ -241,7 +243,7 @@ export default function AdminDashboard({ onLogout }: AdminDashboardProps) {
       const updatedMembers = await getMembers(ekskulType || undefined)
       setMembers(updatedMembers)
 
-      setNewMember({ name: "", class: "", phone: "", email: "", joinDate: "" })
+      setNewMember({ name: "", class: "", phone: "", email: "", joinDate: "", role: "Anggota" })
       setMemberPhoto(null)
       setMemberPhotoPreview("")
       setShowMemberForm(false)
@@ -445,6 +447,105 @@ export default function AdminDashboard({ onLogout }: AdminDashboardProps) {
           <p className="text-muted-foreground">Tambahkan dokumentasi kegiatan pertama Anda</p>
         </div>
       )}
+
+      {/* Add Documentation Modal */}
+      {showAddForm && (
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
+          <Card className="w-full max-w-2xl max-h-[90vh] overflow-y-auto">
+            <CardHeader className="border-b">
+              <div className="flex items-center justify-between">
+                <CardTitle>Tambah Dokumentasi</CardTitle>
+                <Button variant="ghost" size="sm" onClick={() => setShowAddForm(false)}>
+                  <X className="w-4 h-4" />
+                </Button>
+              </div>
+            </CardHeader>
+            <CardContent className="p-6 space-y-4">
+              <div>
+                <Label htmlFor="title">Judul Kegiatan</Label>
+                <Input
+                  id="title"
+                  value={newDoc.title}
+                  onChange={(e) => setNewDoc({ ...newDoc, title: e.target.value })}
+                  placeholder="Masukkan judul kegiatan"
+                />
+              </div>
+
+              <div>
+                <Label htmlFor="description">Deskripsi</Label>
+                <textarea
+                  id="description"
+                  value={newDoc.description}
+                  onChange={(e) => setNewDoc({ ...newDoc, description: e.target.value })}
+                  placeholder="Masukkan deskripsi kegiatan"
+                  className="w-full px-3 py-2 border border-border rounded-md bg-background text-foreground min-h-[100px] resize-y"
+                />
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <Label htmlFor="date">Tanggal Kegiatan</Label>
+                  <Input
+                    id="date"
+                    type="date"
+                    value={newDoc.date}
+                    onChange={(e) => setNewDoc({ ...newDoc, date: e.target.value })}
+                  />
+                </div>
+
+                <div>
+                  <Label htmlFor="location">Lokasi</Label>
+                  <Input
+                    id="location"
+                    value={newDoc.location}
+                    onChange={(e) => setNewDoc({ ...newDoc, location: e.target.value })}
+                    placeholder="Masukkan lokasi kegiatan"
+                  />
+                </div>
+              </div>
+
+              <div>
+                <Label htmlFor="participants">Peserta</Label>
+                <Input
+                  id="participants"
+                  value={newDoc.participants}
+                  onChange={(e) => setNewDoc({ ...newDoc, participants: e.target.value })}
+                  placeholder="Masukkan jumlah atau nama peserta"
+                />
+              </div>
+
+              <div>
+                <Label htmlFor="photo">Foto Kegiatan</Label>
+                <Input
+                  id="photo"
+                  type="file"
+                  accept="image/*"
+                  onChange={handleDocPhotoUpload}
+                  className="cursor-pointer"
+                />
+                {docPhotoPreview && (
+                  <div className="mt-2">
+                    <img
+                      src={docPhotoPreview}
+                      alt="Preview"
+                      className="w-full h-48 object-cover rounded-lg border"
+                    />
+                  </div>
+                )}
+              </div>
+
+              <div className="flex gap-3 pt-4">
+                <Button onClick={handleAddDokumentasi} disabled={loading} className="flex-1">
+                  {loading ? "Menyimpan..." : "Simpan Dokumentasi"}
+                </Button>
+                <Button variant="outline" onClick={() => setShowAddForm(false)} className="flex-1">
+                  Batal
+                </Button>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+      )}
     </div>
   )
 
@@ -473,6 +574,7 @@ export default function AdminDashboard({ onLogout }: AdminDashboardProps) {
                   <th className="text-left p-4 font-semibold text-foreground">Telepon</th>
                   <th className="text-left p-4 font-semibold text-foreground">Email</th>
                   <th className="text-left p-4 font-semibold text-foreground">Bergabung</th>
+                  <th className="text-left p-4 font-semibold text-foreground">Jabatan</th>
                   <th className="text-left p-4 font-semibold text-foreground">Status</th>
                   <th className="text-left p-4 font-semibold text-foreground">Aksi</th>
                 </tr>
@@ -500,6 +602,7 @@ export default function AdminDashboard({ onLogout }: AdminDashboardProps) {
                     <td className="p-4 text-muted-foreground">
                       {new Date(member.joinDate).toLocaleDateString("id-ID")}
                     </td>
+                    <td className="p-4 text-muted-foreground">{(member as any).role || "Anggota"}</td>
                     <td className="p-4">
                       <span className="px-3 py-1 status-active rounded-full text-xs font-medium">{member.status}</span>
                     </td>
@@ -526,6 +629,125 @@ export default function AdminDashboard({ onLogout }: AdminDashboardProps) {
           <Users className="w-16 h-16 text-muted-foreground mx-auto mb-4" />
           <h3 className="text-xl font-semibold text-muted-foreground mb-2">Belum Ada Anggota</h3>
           <p className="text-muted-foreground">Tambahkan anggota pertama ekstrakurikuler Anda</p>
+        </div>
+      )}
+
+      {/* Add Member Modal */}
+      {showMemberForm && (
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
+          <Card className="w-full max-w-2xl max-h-[90vh] overflow-y-auto">
+            <CardHeader className="border-b">
+              <div className="flex items-center justify-between">
+                <CardTitle>Tambah Anggota Baru</CardTitle>
+                <Button variant="ghost" size="sm" onClick={() => setShowMemberForm(false)}>
+                  <X className="w-4 h-4" />
+                </Button>
+              </div>
+            </CardHeader>
+            <CardContent className="p-6 space-y-4">
+              <div>
+                <Label htmlFor="memberPhoto">Foto Anggota</Label>
+                <Input
+                  id="memberPhoto"
+                  type="file"
+                  accept="image/*"
+                  onChange={handleMemberPhotoUpload}
+                  className="cursor-pointer"
+                />
+                {memberPhotoPreview && (
+                  <div className="mt-2 flex justify-center">
+                    <img
+                      src={memberPhotoPreview}
+                      alt="Preview"
+                      className="w-32 h-32 object-cover rounded-full border-4 border-border"
+                    />
+                  </div>
+                )}
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <Label htmlFor="name">Nama Lengkap</Label>
+                  <Input
+                    id="name"
+                    value={newMember.name}
+                    onChange={(e) => setNewMember({ ...newMember, name: e.target.value })}
+                    placeholder="Masukkan nama lengkap"
+                  />
+                </div>
+
+                <div>
+                  <Label htmlFor="class">Kelas</Label>
+                  <Input
+                    id="class"
+                    value={newMember.class}
+                    onChange={(e) => setNewMember({ ...newMember, class: e.target.value })}
+                    placeholder="Contoh: XII IPA 1"
+                  />
+                </div>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <Label htmlFor="phone">Nomor Telepon</Label>
+                  <Input
+                    id="phone"
+                    value={newMember.phone}
+                    onChange={(e) => setNewMember({ ...newMember, phone: e.target.value })}
+                    placeholder="Contoh: 08123456789"
+                  />
+                </div>
+
+                <div>
+                  <Label htmlFor="email">Email</Label>
+                  <Input
+                    id="email"
+                    type="email"
+                    value={newMember.email}
+                    onChange={(e) => setNewMember({ ...newMember, email: e.target.value })}
+                    placeholder="Contoh: nama@email.com"
+                  />
+                </div>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <Label htmlFor="joinDate">Tanggal Bergabung</Label>
+                  <Input
+                    id="joinDate"
+                    type="date"
+                    value={newMember.joinDate}
+                    onChange={(e) => setNewMember({ ...newMember, joinDate: e.target.value })}
+                  />
+                </div>
+
+                <div>
+                  <Label htmlFor="role">Jabatan</Label>
+                  <select
+                    id="role"
+                    value={newMember.role}
+                    onChange={(e) => setNewMember({ ...newMember, role: e.target.value })}
+                    className="w-full px-3 py-2 border border-border rounded-md bg-background text-foreground"
+                  >
+                    <option value="Ketua">Ketua</option>
+                    <option value="Wakil Ketua">Wakil Ketua</option>
+                    <option value="Sekretaris">Sekretaris</option>
+                    <option value="Bendahara">Bendahara</option>
+                    <option value="Anggota">Anggota</option>
+                  </select>
+                </div>
+              </div>
+
+              <div className="flex gap-3 pt-4">
+                <Button onClick={handleAddMember} disabled={loading} className="flex-1">
+                  {loading ? "Menyimpan..." : "Simpan Anggota"}
+                </Button>
+                <Button variant="outline" onClick={() => setShowMemberForm(false)} className="flex-1">
+                  Batal
+                </Button>
+              </div>
+            </CardContent>
+          </Card>
         </div>
       )}
     </div>

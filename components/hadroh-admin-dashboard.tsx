@@ -164,6 +164,14 @@ export default function HadrohAdminDashboard({ onLogout }: HadrohAdminDashboardP
         return <AdminAttendanceManagement />
       case "achievements":
         return <AdminAchievementManagement />
+      case "members":
+        return <AdminMemberCRUD ekskulType="hadroh" />
+      case "documentation":
+        return <AdminDocumentationCRUD ekskulType="hadroh" />
+      case "attendance":
+        return <AdminAttendanceManagement />
+      case "achievements":
+        return <AdminAchievementManagement />
       default:
         return renderDashboard()
     }

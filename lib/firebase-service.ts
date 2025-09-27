@@ -193,7 +193,7 @@ export const getAttendance = async (ekskulType?: string, memberId?: string) => {
 export const addSchedule = async (schedule: Omit<Schedule, "id" | "createdAt" | "updatedAt">) => {
   const docRef = await addDoc(collection(db, "schedules"), {
     ...schedule,
-    date: schedule.date instanceof Date ? Timestamp.fromDate(schedule.date) : Timestamp.fromDate(new Date(schedule.date)),
+    date: typeof schedule.date === 'string' ? Timestamp.fromDate(new Date(schedule.date)) : Timestamp.fromDate(schedule.date),
     createdAt: Timestamp.now(),
     updatedAt: Timestamp.now(),
   })

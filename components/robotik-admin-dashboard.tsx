@@ -213,6 +213,14 @@ export default function RobotikAdminDashboard({ onLogout }: RobotikAdminDashboar
         return <AdminDocumentationCRUD ekskulType="robotik" />
       case "attendance":
         return <AdminAttendanceManagement />
+      case "achievements":
+        return <AdminAchievementManagement />
+      case "members":
+        return <AdminMemberCRUD ekskulType="robotik" />
+      case "documentation":
+        return <AdminDocumentationCRUD ekskulType="robotik" />
+      case "attendance":
+        return <AdminAttendanceManagement />
       default:
         return renderDashboard()
     }

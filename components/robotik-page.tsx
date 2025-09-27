@@ -45,10 +45,10 @@ export default function RobotikPage() {
       try {
         setLoading(true)
         const [membersData, activitiesData, achievementsData, scheduleData] = await Promise.all([
-          getMembers("robotics"),
-          getDocumentation("robotics"),
-          getAchievements("robotics"),
-          getSchedules("robotics"),
+          getMembers("robotik"),
+          getDocumentation("robotik"),
+          getAchievements("robotik"),
+          getSchedules("robotik"),
         ])
 
         setMembers(membersData)
@@ -56,7 +56,7 @@ export default function RobotikPage() {
         setAchievements(achievementsData)
         setSchedule(scheduleData)
       } catch (error) {
-        console.error("Error loading robotics data:", error)
+        console.error("Error loading robotik data:", error)
       } finally {
         setLoading(false)
       }
@@ -297,7 +297,7 @@ export default function RobotikPage() {
                             "id-ID",
                             { weekday: "long" }
                           )}
-                          ,{item.startTime} - {item.endTime}
+                          , {(item as any).time || "15:30-17:30"}
                         </div>
 
                         {item.location && (
@@ -312,7 +312,7 @@ export default function RobotikPage() {
                   <div className="text-center py-4">
                     <Clock className="w-8 h-8 text-muted-foreground mx-auto mb-2" />
                     <p className="text-sm text-muted-foreground">
-                      Belum ada jadwal
+                      Selasa & Kamis, 15:30-17:30
                     </p>
                   </div>
                 )}

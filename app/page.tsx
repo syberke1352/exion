@@ -20,13 +20,17 @@ import { LoadingScreen } from "@/components/loading-screen"
 import { useAuth } from "@/hooks/use-auth"
 import { getDocumentation, getMembers } from "@/lib/firebase-service"
 import type { Documentation, Member } from "@/types"
-import { Dialog, DialogTrigger, DialogContent, DialogTitle, DialogDescription } from "@/components/ui/dialog"
-import { Button } from "@/components/ui/button"
 
 export default function SchoolWebsite() {
   const [activeSection, setActiveSection] = useState("home")
   const { user, loading } = useAuth()
-  const [showLoadingScreen, setShowLoadingScreen] = useState(true)
+  const [showLoadingScreen, setShowLoadingScreen] = useState(() => {
+    // Only show loading screen if this is the first visit
+    if (typeof window !== "undefined") {
+      return !sessionStorage.getItem("hasVisited")
+    }
+    return true
+  })
 
   const [globalDokumentasi, setGlobalDokumentasi] = useState<Documentation[]>([])
   const [globalMembers, setGlobalMembers] = useState<Member[]>([])
@@ -54,6 +58,10 @@ export default function SchoolWebsite() {
 
   const handleLoadingComplete = () => {
     setShowLoadingScreen(false)
+    // Mark that user has visited
+    if (typeof window !== "undefined") {
+      sessionStorage.setItem("hasVisited", "true")
+    }
   }
 
   const handleAdminLogin = (role: string) => {

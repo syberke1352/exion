@@ -17,7 +17,7 @@ export default function ExtracurricularsPage({ onNavigate }: ExtracurricularsPag
       category: "Teknologi",
       description:
         "Pelajari teknologi robotika, pemrograman Arduino, dan IoT. Ikuti kompetisi robotik tingkat nasional dan internasional.",
-      image: "/robotics-students-programming.png",
+      image: "https://images.pexels.com/photos/8566473/pexels-photo-8566473.jpeg",
       members: 24,
       schedule: "Selasa & Kamis, 15:30-17:30",
       location: "Lab Komputer",
@@ -31,7 +31,7 @@ export default function ExtracurricularsPage({ onNavigate }: ExtracurricularsPag
       category: "Olahraga",
       description:
         "Olahraga tim yang mengasah kerjasama, strategi, dan kebugaran fisik. Berlatih teknik dasar hingga advanced.",
-      image: "/futsal-indoor-students.png",
+      image: "https://images.pexels.com/photos/274422/pexels-photo-274422.jpeg",
       members: 32,
       schedule: "Senin & Rabu, 16:00-18:00",
       location: "Lapangan Futsal",
@@ -45,7 +45,7 @@ export default function ExtracurricularsPage({ onNavigate }: ExtracurricularsPag
       category: "Seni",
       description:
         "Ekspresikan kreativitas melalui musik. Belajar berbagai alat musik dan tampil di berbagai acara sekolah.",
-      image: "/school-band-music-students.png",
+      image: "https://images.pexels.com/photos/164821/pexels-photo-164821.jpeg",
       members: 20,
       schedule: "Rabu & Jumat, 15:00-17:00",
       location: "Studio Musik",
@@ -59,7 +59,7 @@ export default function ExtracurricularsPage({ onNavigate }: ExtracurricularsPag
       category: "Bela Diri",
       description:
         "Seni bela diri tradisional Indonesia yang mengajarkan disiplin, karakter, dan teknik pertahanan diri.",
-      image: "/pencak-silat-students.png",
+      image: "https://images.pexels.com/photos/7045715/pexels-photo-7045715.jpeg",
       members: 18,
       schedule: "Selasa & Kamis, 16:00-18:00",
       location: "Aula Sekolah",
@@ -73,7 +73,7 @@ export default function ExtracurricularsPage({ onNavigate }: ExtracurricularsPag
       category: "Seni Islami",
       description:
         "Seni musik Islami yang memadukan dakwah dan keindahan. Belajar bermain rebana dan vokal Islami.",
-      image: "/islamic-music-hadroh.png",
+      image: "https://images.pexels.com/photos/6192297/pexels-photo-6192297.jpeg",
       members: 22,
       schedule: "Jumat & Minggu, 15:00-17:00",
       location: "Masjid Sekolah",
@@ -87,7 +87,7 @@ export default function ExtracurricularsPage({ onNavigate }: ExtracurricularsPag
       category: "Tilawah",
       description:
         "Seni baca Al-Quran dengan tartil dan indah. Persiapan untuk kompetisi MTQ dan festival tilawah.",
-      image: "/quran-recitation-students.png",
+      image: "https://images.pexels.com/photos/8088495/pexels-photo-8088495.jpeg",
       members: 16,
       schedule: "Rabu & Sabtu, 16:00-18:00",
       location: "Masjid Sekolah",
@@ -100,7 +100,7 @@ export default function ExtracurricularsPage({ onNavigate }: ExtracurricularsPag
       name: "Pramuka",
       category: "Kepanduan",
       description: "Kegiatan kepanduan yang mengembangkan karakter, kepemimpinan, dan kecintaan terhadap alam.",
-      image: "/scout-camping-students.png",
+      image: "https://images.pexels.com/photos/1687845/pexels-photo-1687845.jpeg",
       members: 45,
       schedule: "Sabtu, 08:00-12:00",
       location: "Lapangan Sekolah",
@@ -113,7 +113,7 @@ export default function ExtracurricularsPage({ onNavigate }: ExtracurricularsPag
       name: "Basket",
       category: "Olahraga",
       description: "Olahraga basket yang mengasah koordinasi, kerjasama tim, dan strategi permainan.",
-      image: "/basketball-students-court.png",
+      image: "https://images.pexels.com/photos/1752757/pexels-photo-1752757.jpeg",
       members: 28,
       schedule: "Senin & Kamis, 16:00-18:00",
       location: "Lapangan Basket",

@@ -203,6 +203,14 @@ export default function SilatAdminDashboard({ onLogout }: SilatAdminDashboardPro
         return <AdminAttendanceManagement />
       case "achievements":
         return <AdminAchievementManagement />
+      case "members":
+        return <AdminMemberCRUD ekskulType="silat" />
+      case "documentation":
+        return <AdminDocumentationCRUD ekskulType="silat" />
+      case "attendance":
+        return <AdminAttendanceManagement />
+      case "achievements":
+        return <AdminAchievementManagement />
       default:
         return renderDashboard()
     }

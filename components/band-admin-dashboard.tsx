@@ -269,6 +269,14 @@ export default function BandAdminDashboard({ onLogout }: BandAdminDashboardProps
     switch (activeTab) {
       case "dashboard":
         return renderDashboard()
+      case "members":
+        return <AdminMemberCRUD ekskulType="band" />
+      case "documentation":
+        return <AdminDocumentationCRUD ekskulType="band" />
+      case "attendance":
+        return <AdminAttendanceManagement />
+      case "achievements":
+        return <AdminAchievementManagement />
       default:
         return renderDashboard()
     }

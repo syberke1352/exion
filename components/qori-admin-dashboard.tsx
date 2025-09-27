@@ -164,12 +164,20 @@ export default function QoriAdminDashboard({ onLogout }: QoriAdminDashboardProps
         return <AdminAttendanceManagement />
       case "achievements":
         return <AdminAchievementManagement />
+      case "members":
+        return <AdminMemberCRUD ekskulType="qori" />
+      case "documentation":
+        return <AdminDocumentationCRUD ekskulType="qori" />
+      case "attendance":
+        return <AdminAttendanceManagement />
+      case "achievements":
+        return <AdminAchievementManagement />
       default:
         return renderDashboard()
     }
   }
 
-  if (!user || user.role !== "hadroh_admin") {
+  if (!user || user.role !== "qori_admin") {
     return (
       <div className="min-h-screen flex items-center justify-center">
         <LoadingSpinner size="lg" text="Memuat dashboard qori..." variant="primary" />

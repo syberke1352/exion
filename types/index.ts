@@ -29,6 +29,7 @@ export interface Member {
   createdAt: Date
   updatedAt: Date
   notes?: string    
+  role?: string
 }
 
 

@@ -56,7 +56,7 @@ export default function AboutPage() {
         {/* School Image */}
         <div className="mb-16">
           <img
-            src="/modern-school-building.png"
+            src="https://images.pexels.com/photos/207692/pexels-photo-207692.jpeg"
             alt="SMK TI BAZMA"
             className="w-full h-96 object-cover rounded-2xl shadow-lg"
           />

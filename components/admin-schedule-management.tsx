@@ -22,7 +22,8 @@ export default function AdminScheduleManagement() {
     title: "",
     description: "",
     date: "",
-    time: "",
+    startTime: "",
+    endTime: "",
     location: "",
   })
 
@@ -48,7 +49,7 @@ export default function AdminScheduleManagement() {
   }, [user])
 
   const handleAddSchedule = async () => {
-    if (!newSchedule.title || !newSchedule.date || !newSchedule.time || !user) return
+    if (!newSchedule.title || !newSchedule.date || !newSchedule.startTime || !user) return
 
     setLoading(true)
     try {
@@ -61,6 +62,7 @@ export default function AdminScheduleManagement() {
         ...newSchedule,
         ekskulType: ekskulType || "umum",
         createdBy: user.id,
+        date: new Date(newSchedule.date),
       }
 
       await addSchedule(scheduleData)
@@ -74,7 +76,8 @@ export default function AdminScheduleManagement() {
         title: "",
         description: "",
         date: "",
-        time: "",
+        startTime: "",
+        endTime: "",
         location: "",
       })
       setShowAddForm(false)
@@ -160,7 +163,7 @@ export default function AdminScheduleManagement() {
                         <div className="font-medium line-clamp-1">{schedule.title}</div>
                         <div className="flex items-center gap-1 text-muted-foreground mt-1">
                           <Clock className="w-3 h-3" />
-                          <span>{schedule.time}</span>
+                          <span>{(schedule as any).time || `${schedule.startTime}-${schedule.endTime}`}</span>
                         </div>
                         {schedule.location && (
                           <div className="flex items-center gap-1 text-muted-foreground">
@@ -204,7 +207,7 @@ export default function AdminScheduleManagement() {
                     </div>
                     <div className="flex items-center gap-1">
                       <Clock className="w-4 h-4" />
-                      <span>{schedule.time}</span>
+                      <span>{(schedule as any).time || `${schedule.startTime}-${schedule.endTime}`}</span>
                     </div>
                     {schedule.location && (
                       <div className="flex items-center gap-1">
@@ -279,24 +282,36 @@ export default function AdminScheduleManagement() {
                   />
                 </div>
                 <div>
-                  <Label htmlFor="scheduleTime">Waktu</Label>
+                  <Label htmlFor="scheduleStartTime">Waktu Mulai</Label>
                   <Input
-                    id="scheduleTime"
-                    value={newSchedule.time}
-                    onChange={(e) => setNewSchedule({ ...newSchedule, time: e.target.value })}
-                    placeholder="14:00 - 16:00"
+                    id="scheduleStartTime"
+                    type="time"
+                    value={newSchedule.startTime}
+                    onChange={(e) => setNewSchedule({ ...newSchedule, startTime: e.target.value })}
                   />
                 </div>
               </div>
 
-              <div>
-                <Label htmlFor="scheduleLocation">Lokasi</Label>
-                <Input
-                  id="scheduleLocation"
-                  value={newSchedule.location}
-                  onChange={(e) => setNewSchedule({ ...newSchedule, location: e.target.value })}
-                  placeholder="Lokasi kegiatan"
-                />
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <Label htmlFor="scheduleEndTime">Waktu Selesai</Label>
+                  <Input
+                    id="scheduleEndTime"
+                    type="time"
+                    value={newSchedule.endTime}
+                    onChange={(e) => setNewSchedule({ ...newSchedule, endTime: e.target.value })}
+                  />
+                </div>
+
+                <div>
+                  <Label htmlFor="scheduleLocation">Lokasi</Label>
+                  <Input
+                    id="scheduleLocation"
+                    value={newSchedule.location}
+                    onChange={(e) => setNewSchedule({ ...newSchedule, location: e.target.value })}
+                    placeholder="Lokasi kegiatan"
+                  />
+                </div>
               </div>
 
               <div className="flex gap-3 pt-4">

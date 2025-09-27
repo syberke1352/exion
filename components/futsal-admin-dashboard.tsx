@@ -275,6 +275,14 @@ export default function FutsalAdminDashboard({ onLogout }: FutsalAdminDashboardP
     switch (activeTab) {
       case "dashboard":
         return renderDashboard()
+      case "members":
+        return <AdminMemberCRUD ekskulType="futsal" />
+      case "documentation":
+        return <AdminDocumentationCRUD ekskulType="futsal" />
+      case "attendance":
+        return <AdminAttendanceManagement />
+      case "achievements":
+        return <AdminAchievementManagement />
       default:
         return renderDashboard()
     }

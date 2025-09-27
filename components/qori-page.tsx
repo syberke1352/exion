@@ -221,7 +221,7 @@ export default function QoriPage() {
                         <div className="font-medium text-sm">{item.title}</div>
                         <div className="text-xs text-muted-foreground">
                           {new Date(item.date).toLocaleDateString("id-ID", { weekday: "long" })}, 
-                          {item.startTime} - {item.endTime}
+                          {(item as any).time || "16:00-18:00"}
                         </div>
                         {item.location && (
                           <div className="text-xs text-muted-foreground">📍 {item.location}</div>
@@ -232,7 +232,7 @@ export default function QoriPage() {
                 ) : (
                   <div className="text-center py-4">
                     <Clock className="w-8 h-8 text-muted-foreground mx-auto mb-2" />
-                    <p className="text-sm text-muted-foreground">Belum ada jadwal</p>
+                    <p className="text-sm text-muted-foreground">Rabu & Sabtu, 16:00-18:00</p>
                   </div>
                 )}
               </CardContent>

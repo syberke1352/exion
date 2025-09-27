@@ -41,6 +41,7 @@ export default function AdminMemberCRUD({ ekskulType }: AdminMemberCRUDProps) {
     joinDate: "",
     status: "active" as "active" | "inactive",
     notes: "",
+    role: "Anggota",
   })
   const [uploadResults, setUploadResults] = useState<any[]>([])
 
@@ -114,6 +115,7 @@ export default function AdminMemberCRUD({ ekskulType }: AdminMemberCRUDProps) {
       joinDate: member.joinDate.toISOString().split("T")[0],
       status: member.status,
       notes: (member as any).notes || "",
+      role: (member as any).role || "Anggota",
     })
     setUploadResults(member.photoUrl ? [{ url: member.photoUrl, secureUrl: member.photoUrl }] : [])
     setIsDialogOpen(true)
@@ -141,6 +143,7 @@ export default function AdminMemberCRUD({ ekskulType }: AdminMemberCRUDProps) {
       joinDate: "",
       status: "active",
       notes: "",
+      role: "Anggota",
     })
     setUploadResults([])
     setEditingMember(null)
@@ -269,6 +272,25 @@ export default function AdminMemberCRUD({ ekskulType }: AdminMemberCRUDProps) {
               </div>
 
               <div>
+                <Label htmlFor="role">Jabatan</Label>
+                <Select
+                  value={formData.role}
+                  onValueChange={(value) => setFormData({ ...formData, role: value })}
+                >
+                  <SelectTrigger>
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="Ketua">Ketua</SelectItem>
+                    <SelectItem value="Wakil Ketua">Wakil Ketua</SelectItem>
+                    <SelectItem value="Sekretaris">Sekretaris</SelectItem>
+                    <SelectItem value="Bendahara">Bendahara</SelectItem>
+                    <SelectItem value="Anggota">Anggota</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+
+              <div>
                 <Label>Foto Profil</Label>
                 <CloudinaryUpload
                   onUploadComplete={(results) => {
@@ -342,6 +364,8 @@ export default function AdminMemberCRUD({ ekskulType }: AdminMemberCRUDProps) {
                       <span>{member.studentId}</span>
                       <span>•</span>
                       <span>{member.email}</span>
+                      <span>•</span>
+                      <span>{(member as any).role || "Anggota"}</span>
                     </div>
                     <div className="flex items-center gap-2 mt-1">
                       <Badge variant={member.status === "active" ? "default" : "secondary"}>
