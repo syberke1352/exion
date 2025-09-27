@@ -131,7 +131,7 @@ export default function ExtracurricularsPage({ onNavigate }: ExtracurricularsPag
         {/* Header */}
         <div className="text-center mb-16">
           <h1 className="font-heading font-bold text-4xl lg:text-5xl mb-6">
-            Ekstrakurikuler <span className="text-blue-600">SMA Negeri 1</span>
+            Ekstrakurikuler <span className="text-blue-600">SMK TI BAZMA</span>
           </h1>
           <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
             Temukan passion Anda dan kembangkan talenta melalui berbagai kegiatan ekstrakurikuler yang kami tawarkan.

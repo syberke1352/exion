@@ -66,36 +66,42 @@ export default function AdminMemberCRUD({ ekskulType }: AdminMemberCRUDProps) {
     return unsubscribe
   }, [ekskulType, user])
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
-    if (!user) return
+ const handleSubmit = async (e: React.FormEvent) => {
+  e.preventDefault()
+  if (!user) return
 
-    setLoading(true)
-    try {
-      const memberData = {
-        ...formData,
-        ekskulType: getFilterEkskulType() || "robotik",
-        joinDate: formData.joinDate ? new Date(formData.joinDate) : new Date(),
-        photoUrl: uploadResults[0]?.secure_url || uploadResults[0]?.url || "",
-        createdBy: user.id,
-      }
-
-      if (editingMember) {
-        await memberOperations.update(editingMember.id, memberData)
-        console.log("Data anggota berhasil diperbarui!")
-      } else {
-        await memberOperations.create(memberData)
-        console.log("Anggota baru berhasil ditambahkan!")
-      }
-
-      setIsDialogOpen(false)
-      resetForm()
-    } catch (error) {
-      console.error("Error saving member:", error)
-    } finally {
-      setLoading(false)
+  setLoading(true)
+  try {
+    const memberData: any = {
+      ...formData,
+      ekskulType: getFilterEkskulType() || "robotik",
+      joinDate: formData.joinDate ? new Date(formData.joinDate) : new Date(),
+      photoUrl: uploadResults[0]?.secure_url || uploadResults[0]?.url || "",
+      createdBy: user.id,
     }
+
+    Object.keys(memberData).forEach((key) => {
+      if (memberData[key] === undefined) {
+        delete memberData[key]
+      }
+    })
+
+    if (editingMember) {
+      await memberOperations.update(editingMember.id, memberData)
+      console.log("Data anggota berhasil diperbarui!")
+    } else {
+      await memberOperations.create(memberData)
+      console.log("Anggota baru berhasil ditambahkan!")
+    }
+
+    setIsDialogOpen(false)
+    resetForm()
+  } catch (error) {
+    console.error("Error saving member:", error)
+  } finally {
+    setLoading(false)
   }
+}
 
   const handleEdit = (member: Member) => {
     setEditingMember(member)

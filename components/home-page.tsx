@@ -17,29 +17,7 @@
   import { Card, CardContent } from "@/components/ui/card"
   import { useEffect, useState } from "react"
   import { ScrollRevealText, ParallaxSection, AnimatedCard } from "./advanced-animations"
-
-  interface Documentation {
-    id: number
-    title: string
-    description: string
-    date: string
-    location: string
-    participants: string
-    image: string
-    ekskulType?: string
-  }
-
-  interface Member {
-    id: number
-    name: string
-    class: string
-    phone: string
-    email: string
-    joinDate: string
-    status: string
-    photo?: string
-    ekskulType?: string
-  }
+  import { Documentation, Member } from "@/types"
 
   interface HomePageProps {
     onNavigate: (section: string) => void
@@ -329,7 +307,7 @@
               </p>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
               {featuredExtracurriculars.map((ekskul) => (
                 <Card
                   key={ekskul.id}
@@ -412,7 +390,7 @@
                 </p>
               </ParallaxSection>
 
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10">
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                 {recentDokumentasi.map((doc) => (
                   <AnimatedCard
                     key={doc.id}

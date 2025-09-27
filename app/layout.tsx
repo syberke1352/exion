@@ -14,9 +14,8 @@ const dmSans = DM_Sans({
 })
 
 export const metadata: Metadata = {
-  title: "SMA Negeri 1 - Professional Extracurricular Management",
-  description: "Elevate Your Extracurricular Experience - Professional management system for SMA Negeri 1",
-  generator: "v0.app",
+  title: "EXION",
+  description: "Elevate Your Extracurricular Experience - Professional management system for SMK TI Bazma",
 }
 
 export default function RootLayout({

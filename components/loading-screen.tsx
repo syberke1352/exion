@@ -3,7 +3,6 @@
 import { useState, useEffect } from "react"
 import { motion, AnimatePresence } from "framer-motion"
 
-// ✅ Custom easing function (karena easeOutBack nggak diexport langsung di framer-motion v10+)
 const easeOutBack = (x: number): number => {
   const c1 = 1.70158
   const c3 = c1 + 1
@@ -30,7 +29,7 @@ export function LoadingScreen({ onComplete }: { onComplete: () => void }) {
     }, 50)
 
     return () => clearInterval(timer)
-  }, [onComplete]) // ✅ sudah fix
+  }, [onComplete]) 
 
   return (
     <AnimatePresence>
@@ -71,7 +70,7 @@ export function LoadingScreen({ onComplete }: { onComplete: () => void }) {
                 />
                 <div className="absolute inset-0 rounded-full overflow-hidden flex items-center justify-center">
                   <img
-                    src="/logo.png" // ganti dengan path logo kamu (misal di public/logo.png)
+                    src="/logo.webp"
                     alt="SMK Logo"
                     className="w-18 h-18 inset-0 rounded-full object-cover mx-auto"
                   />

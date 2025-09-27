@@ -38,7 +38,7 @@ export default function AchievementsPage() {
     {
       icon: Award,
       label: "Penghargaan",
-      value: achievements.filter((a) => a.ekskulType).length.toString(), // kategori dihapus karena nggak ada di type
+      value: achievements.filter((a) => a.ekskulType).length.toString(), 
       color: "text-blue-600",
     },
     {
@@ -100,7 +100,7 @@ export default function AchievementsPage() {
         {/* Header */}
         <div className="text-center mb-16">
           <h1 className="font-heading font-bold text-4xl lg:text-5xl mb-6">
-            Prestasi <span className="text-blue-600">SMA Negeri 1</span>
+            Prestasi <span className="text-blue-600">SMK TI Bazma</span>
           </h1>
           <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
             Kebanggaan kami atas pencapaian luar biasa siswa-siswi dalam berbagai kompetisi dan kejuaraan tingkat daerah

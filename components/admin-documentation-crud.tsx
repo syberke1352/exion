@@ -60,52 +60,64 @@ export default function AdminDocumentationCRUD({ ekskulType }: AdminDocumentatio
     return unsubscribe
   }, [ekskulType, user])
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
-    if (!user) return
+ const handleSubmit = async (e: React.FormEvent) => {
+  e.preventDefault()
+  if (!user) return
 
-    setLoading(true)
-    try {
-      const docData = {
-        ...formData,
-        ekskulType: getFilterEkskulType() || "robotik",
-        date: formData.date ? new Date(formData.date) : new Date(),
-        photoUrls: uploadResults.map((result) => result.secure_url || result.url || ""),
-        image: uploadResults[0]?.secure_url || uploadResults[0]?.url || "",
-        createdBy: user.id,
-      }
+  setLoading(true)
+  try {
+    const now = new Date()
 
-      if (editingDoc) {
-        await documentationOperations.update(editingDoc.id, docData)
-        console.log("Dokumentasi berhasil diperbarui!")
-      } else {
-        await documentationOperations.create(docData)
-        console.log("Dokumentasi baru berhasil ditambahkan!")
-      }
+   const docData: Omit<Documentation, "id"> = {
+  title: formData.title || "",
+  description: formData.description || "",
+  date: formData.date ? new Date(formData.date) : now,
+  location: formData.location || "",
+  participants: formData.participants || "",
+  ekskulType: getFilterEkskulType() || "robotik",
+  photoUrls: uploadResults.map((result) => result.secure_url || result.url || ""),
+  image: uploadResults[0]?.secure_url || uploadResults[0]?.url || "",
+  createdBy: user.id,
+  createdAt: now,
+  updatedAt: now,
+}
 
-      setIsDialogOpen(false)
-      resetForm()
-    } catch (error) {
-      console.error("Error saving documentation:", error)
-      setError("Gagal menyimpan dokumentasi. Silakan coba lagi.")
-    } finally {
-      setLoading(false)
+
+    if (editingDoc) {
+      await documentationOperations.update(editingDoc.id, { ...docData, updatedAt: new Date() })
+      console.log("Dokumentasi berhasil diperbarui!")
+    } else {
+      await documentationOperations.create(docData)
+      console.log("Dokumentasi baru berhasil ditambahkan!")
     }
-  }
 
-  const handleEdit = (doc: Documentation) => {
-    setEditingDoc(doc)
-    setFormData({
-      title: doc.title,
-      description: doc.description,
-      date: new Date(doc.date).toISOString().split("T")[0],
-      location: doc.location || "",
-      participants: doc.participants || "",
-      category: (doc as any).category || "training",
-    })
-    setUploadResults((doc.photoUrls || []).map((url) => ({ url, secureUrl: url })))
-    setIsDialogOpen(true)
+    setIsDialogOpen(false)
+    resetForm()
+  } catch (error) {
+    console.error("Error saving documentation:", error)
+    setError("Gagal menyimpan dokumentasi. Silakan coba lagi.")
+  } finally {
+    setLoading(false)
   }
+}
+
+const handleEdit = (doc: Documentation) => {
+  setEditingDoc(doc)
+  setFormData({
+    title: doc.title || "",
+    description: doc.description || "",
+    date: doc.date && !isNaN(new Date(doc.date).getTime())
+          ? new Date(doc.date).toISOString().split("T")[0]
+          : "",
+    location: doc.location || "",
+    participants: doc.participants || "",
+    category: (doc as any).category || "training",
+  })
+  setUploadResults((doc.photoUrls || []).map((url) => ({ url, secure_url: url })))
+  setIsDialogOpen(true)
+}
+
+
 
   const handleDelete = async (id: string) => {
     if (confirm("Apakah Anda yakin ingin menghapus dokumentasi ini?")) {
@@ -120,17 +132,18 @@ export default function AdminDocumentationCRUD({ ekskulType }: AdminDocumentatio
   }
 
   const resetForm = () => {
-    setFormData({
-      title: "",
-      description: "",
-      date: "",
-      location: "",
-      participants: "",
-      category: "training",
-    })
-    setUploadResults([])
-    setEditingDoc(null)
-  }
+  setFormData({
+    title: "",
+    description: "",
+    date: "",
+    location: "",
+    participants: "",
+    category: "training",
+  })
+  setUploadResults([])
+  setEditingDoc(null)
+}
+
 
   if (loading && documentation.length === 0) {
     return <LoadingSpinner size="lg" text="Memuat dokumentasi..." />

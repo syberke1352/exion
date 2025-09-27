@@ -30,8 +30,7 @@ export default function Navbar({ activeSection, onSectionChange }: NavbarProps) 
               <div className="absolute -top-1 -right-1 w-3 h-3 bg-accent rounded-full animate-pulse"></div>
             </div>
             <div className="flex flex-col">
-              <span className="font-heading font-bold text-lg text-foreground">SMK TI BAZMA</span>
-              <span className="text-xs text-primary font-medium">Ekstrakurikuler</span>
+              <span className="font-heading font-bold text-lg text-foreground">EXION</span>
             </div>
           </div>
 

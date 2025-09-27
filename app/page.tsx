@@ -20,6 +20,8 @@ import { LoadingScreen } from "@/components/loading-screen"
 import { useAuth } from "@/hooks/use-auth"
 import { getDocumentation, getMembers } from "@/lib/firebase-service"
 import type { Documentation, Member } from "@/types"
+import { Dialog, DialogTrigger, DialogContent, DialogTitle, DialogDescription } from "@/components/ui/dialog"
+import { Button } from "@/components/ui/button"
 
 export default function SchoolWebsite() {
   const [activeSection, setActiveSection] = useState("home")

@@ -6,10 +6,10 @@ const firebaseConfig = {
   apiKey: "AIzaSyDEI2A9AtV9PjVXN7WJCoATdbCBHFVcBe8",
   authDomain: "eksul-229ec.firebaseapp.com",
   projectId: "eksul-229ec",
-  storageBucket: "eksul-229ec.firebasestorage.app",
+  storageBucket: "eksul-229ec.appspot.com",
   messagingSenderId: "336428655837",
   appId: "1:336428655837:web:d1052473b9b76f910aa734",
-  measurementId: "G-4QCD0L2LVC",
+  measurementId: "G-4QCD0L2LVC"
 };
 
 const app = initializeApp(firebaseConfig);

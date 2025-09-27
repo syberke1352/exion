@@ -20,16 +20,17 @@ export interface Member {
   class: string
   phone: string
   email: string
-  joinDate: Date
+  joinDate: Date      
   status: "active" | "inactive"
   photoUrl?: string
-  photo?: string
   studentId: string
   ekskulType: EkskulType
   createdBy?: string
   createdAt: Date
   updatedAt: Date
+  notes?: string    
 }
+
 
 export interface Documentation {
   id: string
@@ -132,7 +133,7 @@ export interface FirebaseError {
 }
 
 export interface PublicUploadResult {
-  secure_url: string // 🔹 ganti dari `url` → `secure_url` biar match Cloudinary
+  secure_url: string 
   path?: string
   name?: string
   size?: number
